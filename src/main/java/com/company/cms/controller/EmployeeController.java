@@ -1,19 +1,18 @@
 package com.company.cms.controller;
 
 import java.util.List;
-import java.util.Optional;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.company.cms.DTO.EmployeeDTO;
-import com.company.cms.entity.Employee;
 import com.company.cms.service.EmployeeService;
 
 @RestController
@@ -46,10 +45,10 @@ public class EmployeeController {
 //		return employeeService.getAllEmployeesbySalary(Salary);
 //	}
 	
-	 @GetMapping("/{id}")
-	    public Optional<Employee> getEmployeeById(@PathVariable Long id) {
-	        return employeeService.getEmployeeById(id);
-	    }
+	@GetMapping("employees/{id}")
+    public EmployeeDTO getEmployeeById(@PathVariable Long id) {
+        return employeeService.getEmployeeById(id);
+    }
 	
 	@PostMapping("/employees")
 	public List<EmployeeDTO> addEmployee(@RequestBody EmployeeDTO employee) throws Exception {
@@ -57,9 +56,22 @@ public class EmployeeController {
 		return employeeService.addEmployee(employee);
 		
 	}
+	
+	@PutMapping("/employees")
+	public List<EmployeeDTO> updateEmployee(@RequestBody EmployeeDTO employee) throws Exception {
+		
+		return employeeService.updateEmployee(employee);
+		
+	}
+	
+	@DeleteMapping("employees/{id}")
+    public List<EmployeeDTO> deleteEmployeeById(@PathVariable Long id) {
+        return employeeService.deleteEmployeeById(id);
+    }
+	
 	@GetMapping("/employees/excel")
 	public void generateExcelResponse(HttpServletResponse response) throws Exception {
-response.setContentType("application/octet-stream");
+		response.setContentType("application/octet-stream");
 		
 		String headerKey = "Content-Disposition";
 		String headerValue = "attachment;filename=Employees.xls";

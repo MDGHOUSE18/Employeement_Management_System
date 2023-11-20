@@ -2,6 +2,7 @@ package com.company.cms.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -32,35 +33,41 @@ public class EmployeeService {
 	private DepartmentRepository departmentRepository;
 	
 	public List<EmployeeDTO> getAllEmployees() {
-		
-		List<EmployeeDTO> employeeDTOs = new ArrayList<EmployeeDTO>();
-		
-		List<Employee> employees = (List<Employee>)employeeRepository.findAll();
-		
-		for(Employee employee: employees) {
-			employeeDTOs.add(getDTOfromDomainForEmployee(employee));
-		}
-		
-		return employeeDTOs;
-		
+			
+			List<EmployeeDTO> employeeDTOs = new ArrayList<EmployeeDTO>();
+			
+			List<Employee> employees = (List<Employee>)employeeRepository.findAll();
+			
+			for(Employee employee: employees) {
+				employeeDTOs.add(getDTOfromDomainForEmployee(employee));
+			}
+			
+			return employeeDTOs;
+			
 	}
-	public java.util.Optional<Employee> getEmployeeById(Long id) {
-        return employeeRepository.findById(id);
-    }
+	public EmployeeDTO getEmployeeById(Long id) {
+		
+		Optional<Employee> employee =  employeeRepository.findById(id);
+		
+		EmployeeDTO empDTO = getDTOfromDomainForEmployee(employee.get());
+		
+	    return empDTO;
+	}
 	public List<EmployeeDTO> addEmployee(EmployeeDTO employeeDTO) throws Exception {
-		
-		logger.info("Inside addEmployee");
-		
-		Employee employee = getDomainfromDTOForEmployee(employeeDTO);
-		
-		employeeRepository.save(employee);
-		
-		
-		return getAllEmployees();
-	}
+			
+			logger.info("Inside addEmployee");
+			
+			Employee employee = getDomainfromDTOForEmployee(employeeDTO);
+			
+			employeeRepository.save(employee);
+			
+			
+			return getAllEmployees();
+		}
+
 
 	
-	private EmployeeDTO getDTOfromDomainForEmployee(Employee employee) {
+private EmployeeDTO getDTOfromDomainForEmployee(Employee employee) {
 		
 		EmployeeDTO employeeDTO = new EmployeeDTO();
 		
@@ -79,8 +86,9 @@ public class EmployeeService {
 		
 	}
 	
+	
 	private Employee getDomainfromDTOForEmployee(EmployeeDTO employeeDTO) throws Exception {
-		
+	
 		Employee employee = new Employee();
 		
 		Department department = departmentRepository.findByName(employeeDTO.getDepartmentName());
@@ -102,9 +110,9 @@ public class EmployeeService {
 		
 		
 		return employee;
-		
+	
 	}
-	public List<EmployeeDTO> getAllEmployeesByDepartment(String departmentName) {
+public List<EmployeeDTO> getAllEmployeesByDepartment(String departmentName) {
 		
 		List<EmployeeDTO> employeeDTOs = new ArrayList<EmployeeDTO>();
 		
@@ -119,6 +127,33 @@ public class EmployeeService {
 		return employeeDTOs;
 		
 	}
+	
+	public List<EmployeeDTO> updateEmployee(EmployeeDTO employeeDTO) throws Exception {
+	
+		
+		logger.info("Inside addEmployee");
+		
+		Optional<Employee> savedEmp = employeeRepository.findById(employeeDTO.getEmployeeId());
+		
+		
+		if(!savedEmp.isPresent()) {
+			throw new Exception("Employee not present");
+		}
+		
+		Employee employee = getDomainfromDTOForEmployee(employeeDTO);
+		
+		employeeRepository.save(employee);
+		
+		
+		return getAllEmployees();
+	
+	}
+	public List<EmployeeDTO> deleteEmployeeById(Long id) {
+		employeeRepository.deleteById(id);
+		return getAllEmployees();
+	}
+
+
 	private EmployeeDTO getDTOfromSalaryForEmployee(Employee employee) {
 		
 		EmployeeDTO employeeDTO = new EmployeeDTO();

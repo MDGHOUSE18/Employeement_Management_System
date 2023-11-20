@@ -6,4 +6,6 @@ import com.company.cms.entity.Role;
 
 public interface RoleRepo extends CrudRepository<Role, Integer> {
 
+	Role findByName(String roleName);
+
 }
