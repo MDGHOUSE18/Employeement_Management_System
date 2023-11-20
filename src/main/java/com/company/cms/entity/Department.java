@@ -12,15 +12,15 @@ public class Department {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "DEPARTMENT_ID")
-	private int id;
+	private long id;
 	@Column(name = "DEPARTMENT_NAME")
 	private String name;
 	@Column(name = "DEPARTMENT_HEAD")
 	private String head;
-	public int getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public String getName() {

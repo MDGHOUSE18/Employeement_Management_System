@@ -4,7 +4,7 @@ import javax.validation.constraints.NotBlank;
 
 public class DepartmentDTO {
 
-	private int id;
+	private long id;
 
 	@NotBlank(message="Department name is mandatory")
 	private String name;
@@ -12,10 +12,10 @@ public class DepartmentDTO {
 	@NotBlank(message="Department head is mandatory")
 	private String head;
 	
-	public int getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public String getName() {

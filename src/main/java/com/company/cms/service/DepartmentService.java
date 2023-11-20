@@ -2,6 +2,7 @@ package com.company.cms.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.company.cms.DTO.DepartmentDTO;
+import com.company.cms.DTO.EmployeeDTO;
 import com.company.cms.entity.Department;
 import com.company.cms.entity.Employee;
 import com.company.cms.repository.DepartmentRepository;
@@ -36,24 +38,24 @@ public class DepartmentService {
 		
 		return departmentDTOs;
 	}
-	
+	public DepartmentDTO getDepartmrntById(Long id) {
+			
+			Optional<Department> department =  departmentRepository.findById(id);
+			
+			DepartmentDTO depDTO = getDTOFromDAOForDepartment(department.get());
+			
+		    return depDTO;
+		}
 	public List<DepartmentDTO> addDepartment(DepartmentDTO departmentDTO) {
 		
 		
 		logger.info("Inside adddepartment");
-		List<DepartmentDTO> departmentDTOs = new ArrayList<DepartmentDTO>();
 		
 		Department department = getDAOFromDTOForDepartment(departmentDTO);
 		
 		departmentRepository.save(department);
 		
-		List<Department> departments = (List<Department>)departmentRepository.findAll();
-		
-		for(Department dept: departments) {
-			departmentDTOs.add(getDTOFromDAOForDepartment(dept));
-		}
-		
-		return departmentDTOs;
+		return getAllDepartments();
 	}
 	
 	private Department getDAOFromDTOForDepartment(DepartmentDTO departmentDTO) {
@@ -78,7 +80,30 @@ public class DepartmentService {
 		
 		return departmentDTO;
 	}
-	
+	public List<DepartmentDTO> updateDepartment(DepartmentDTO departmentDTO) throws Exception {
+		
+			
+			logger.info("Inside update department");
+			
+			Optional<Department> savedDep = departmentRepository.findById(departmentDTO.getId());
+			
+			
+			if(!savedDep.isPresent()) {
+				throw new Exception("Department not present");
+			}
+			
+			Department department = getDAOFromDTOForDepartment(departmentDTO);
+			
+			departmentRepository.save(department);
+			
+			
+			return getAllDepartments();
+		
+	}
+	public List<DepartmentDTO> deleteDepartmentById(Long id) {
+			departmentRepository.deleteById(id);
+			return getAllDepartments();
+	}
 	public void generateExcel(HttpServletResponse response) throws Exception {
 
 		List<Department> departments = (List<Department>) departmentRepository.findAll();

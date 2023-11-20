@@ -6,12 +6,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.company.cms.DTO.DepartmentDTO;
+import com.company.cms.DTO.EmployeeDTO;
 import com.company.cms.entity.Department;
 import com.company.cms.entity.Employee;
 import com.company.cms.service.DepartmentService;
@@ -22,19 +26,36 @@ public class DepartmentController {
 	private DepartmentService departmentService; 
 	
 	//mapping the getProduct() method to /product  
-	@GetMapping(value = "/department")  
+	@GetMapping(value = "/departments")  
 	public List<DepartmentDTO> getAllDepartments()   
 	{  
 	  
 	return departmentService.getAllDepartments();  
 	}
+	@GetMapping(value = "/departments/{id}") 
+	public DepartmentDTO getDepartmentById(@PathVariable Long id)   
+	{  
+	  
+	return departmentService.getDepartmrntById(id);  
+	}
 	
-	@PostMapping("/department")
+	@PostMapping("/departments")
 	public List<DepartmentDTO> addDepartment(@Valid @RequestBody DepartmentDTO department) {
 		
 		return departmentService.addDepartment(department);
 		
 	}
+	@PutMapping("/departments")
+	public List<DepartmentDTO> updateDepartment(@RequestBody DepartmentDTO department) throws Exception {
+		
+		return departmentService.updateDepartment(department);
+		
+	}
+	
+	@DeleteMapping("departments/{id}")
+    public List<DepartmentDTO> deleteDepartmentById(@PathVariable Long id) {
+        return departmentService.deleteDepartmentById(id);
+    }
 	@GetMapping("/department/excel")
 	public void generateExcelReport(HttpServletResponse response) throws Exception{
 		

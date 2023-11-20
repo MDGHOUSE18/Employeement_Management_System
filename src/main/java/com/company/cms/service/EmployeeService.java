@@ -131,7 +131,7 @@ public List<EmployeeDTO> getAllEmployeesByDepartment(String departmentName) {
 	public List<EmployeeDTO> updateEmployee(EmployeeDTO employeeDTO) throws Exception {
 	
 		
-		logger.info("Inside addEmployee");
+		logger.info("Inside update Employee");
 		
 		Optional<Employee> savedEmp = employeeRepository.findById(employeeDTO.getEmployeeId());
 		
@@ -154,24 +154,24 @@ public List<EmployeeDTO> getAllEmployeesByDepartment(String departmentName) {
 	}
 
 
-	private EmployeeDTO getDTOfromSalaryForEmployee(Employee employee) {
-		
-		EmployeeDTO employeeDTO = new EmployeeDTO();
-		
-		
-		employeeDTO.setDepartmentName(employee.getDepartment().getName());
-		
-		employeeDTO.setEmployeeId(employee.getEmployeeId());
-		employeeDTO.setFirstName(employee.getFirstName());
-		
-		employeeDTO.setLastName(employee.getLastName());
-		
-		employeeDTO.setSalary(employee.getSalary());
-		
-		
-		return employeeDTO;
-		
-	}
+//	private EmployeeDTO getDTOfromSalaryForEmployee(Employee employee) {
+//		
+//		EmployeeDTO employeeDTO = new EmployeeDTO();
+//		
+//		
+//		employeeDTO.setDepartmentName(employee.getDepartment().getName());
+//		
+//		employeeDTO.setEmployeeId(employee.getEmployeeId());
+//		employeeDTO.setFirstName(employee.getFirstName());
+//		
+//		employeeDTO.setLastName(employee.getLastName());
+//		
+//		employeeDTO.setSalary(employee.getSalary());
+//		
+//		
+//		return employeeDTO;
+//		
+//	}
 	
 	public List<EmployeeDTO> getAllEmployeesBySalary(Double Salary){
 		List<EmployeeDTO> employeeDTOs = new ArrayList<EmployeeDTO>();
